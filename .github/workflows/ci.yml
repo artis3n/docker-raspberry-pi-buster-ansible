@@ -22,6 +22,8 @@ jobs:
 
       - name: Install Goss
         uses: e1himself/goss-installation-action@master
+        with:
+          version: v0.3.13
       
       - name: Build the image
         run: make build
