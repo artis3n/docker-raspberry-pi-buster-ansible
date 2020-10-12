@@ -1,0 +1,30 @@
+name: Docker CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Hadolint
+        run: make lint
+  
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Goss
+        uses: e1himself/goss-installation-action@master
+      
+      - name: Build the image
+        run: make build
+      
+      - name: Test the image
+        run: make test
