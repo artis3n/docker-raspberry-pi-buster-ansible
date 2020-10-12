@@ -40,7 +40,11 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       
       - name: Build the image
-        run: make build
+        run: |
+          make build
+          docker image ls
       
       - name: Test the image
-        run: make test
+        run: |
+          docker image ls
+          make test

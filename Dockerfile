@@ -24,13 +24,12 @@ RUN find /lib/systemd/system/sysinit.target.wants/* ! -name systemd-tmpfiles-set
     rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
     rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
     rm -f /lib/systemd/system/basic.target.wants/*;\
-    rm -f /lib/systemd/system/anaconda.target.wants/*;
-
-# Remove unnecessary getty and udev targets that result in high CPU usage when using
-# multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
-# See https://github.com/geerlingguy/docker-ubuntu1804-ansible/pull/10
-RUN rm -f /lib/systemd/system/systemd*udev* \
-  && rm -f /lib/systemd/system/getty.target
+    rm -f /lib/systemd/system/anaconda.target.wants/*; \
+    # Remove unnecessary getty and udev targets that result in high CPU usage when using
+    # multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
+    # See https://github.com/geerlingguy/docker-ubuntu1804-ansible/pull/10
+    rm -f /lib/systemd/system/systemd*udev*; \
+    rm -f /lib/systemd/system/getty.target
 
 # Install Ansible via pip.
 RUN pip install $pip_packages
