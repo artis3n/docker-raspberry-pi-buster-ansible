@@ -15,8 +15,6 @@ RUN apt-get update \
     && apt-get autoremove \
     && apt-get clean
 
-RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
-
 # Cleanup unwanted systemd files -- See https://hub.docker.com/_/centos/
 # See https://github.com/geerlingguy/docker-ubuntu1804-ansible/pull/12
 RUN find /lib/systemd/system/sysinit.target.wants/* ! -name systemd-tmpfiles-setup.service -delete; \
