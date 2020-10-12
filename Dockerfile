@@ -32,9 +32,6 @@ RUN find /lib/systemd/system/sysinit.target.wants/* ! -name systemd-tmpfiles-set
 RUN rm -f /lib/systemd/system/systemd*udev* \
   && rm -f /lib/systemd/system/getty.target
 
-# Fix potential UTF-8 errors with ansible-test.
-RUN locale-gen en_US.UTF-8
-
 # Install Ansible via pip.
 RUN pip install $pip_packages
 
