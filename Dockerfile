@@ -42,8 +42,8 @@ RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin
 # Install Ansible inventory file
 #
 # Make sure systemd doesn't start agettys on tty[1-6]
-RUN mkdir -p /etc/ansible
-RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts \
+RUN mkdir -p /etc/ansible \
+    && printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts \
     && rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 
 VOLUME ["/sys/fs/cgroup"]
