@@ -18,24 +18,9 @@ RUN apt-get update \
     && apt-get autoremove \
     && apt-get clean
 
-# Cleanup unwanted systemd files -- See https://hub.docker.com/_/centos/
-# See https://github.com/geerlingguy/docker-ubuntu1804-ansible/pull/12
-RUN find /lib/systemd/system/sysinit.target.wants/* ! -name systemd-tmpfiles-setup.service -delete; \
-    rm -f /lib/systemd/system/multi-user.target.wants/*;\
-    rm -f /etc/systemd/system/*.wants/*;\
-    rm -f /lib/systemd/system/local-fs.target.wants/*; \
-    rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-    rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-    rm -f /lib/systemd/system/basic.target.wants/*;\
-    rm -f /lib/systemd/system/anaconda.target.wants/*; \
-    # Remove unnecessary getty and udev targets that result in high CPU usage when using
-    # multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
-    # See https://github.com/geerlingguy/docker-ubuntu1804-ansible/pull/10
-    rm -f /lib/systemd/system/systemd*udev*; \
-    rm -f /lib/systemd/system/getty.target
-
 # Install Ansible via pip.
-RUN pip3 install --no-cache-dir $pip_packages
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 install --no-cache-dir $pip_packages
 
 COPY initctl_faker .
 RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl

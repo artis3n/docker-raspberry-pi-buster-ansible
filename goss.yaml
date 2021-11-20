@@ -6,7 +6,8 @@ command:
   ansible --version:
     exit-status: 0
     stdout:
-    - executable location = /usr/sbin/ansible
+      - executable location = /usr/sbin/ansible
     stderr: []
+    timeout: 15000  # in milliseconds
   systemctl status --no-pager:
     exit-status: 0
