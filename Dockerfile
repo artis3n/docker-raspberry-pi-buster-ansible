@@ -4,6 +4,8 @@ LABEL maintainer="Artis3n"
 ARG pip_packages="ansible"
 ENV DEBIAN_FRONTEND noninteractive
 
+WORKDIR /
+
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -32,17 +34,17 @@ RUN find /lib/systemd/system/sysinit.target.wants/* ! -name systemd-tmpfiles-set
     rm -f /lib/systemd/system/getty.target
 
 # Install Ansible via pip.
-RUN pip install $pip_packages
+RUN pip install --no-cache-dir $pip_packages
 
 COPY initctl_faker .
 RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
 
-# Install Ansible inventory file.
+# Install Ansible inventory file
+#
+# Make sure systemd doesn't start agettys on tty[1-6]
 RUN mkdir -p /etc/ansible
-RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
-
-# Make sure systemd doesn't start agettys on tty[1-6].
-RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
+RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts \
+    && rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 
 VOLUME ["/sys/fs/cgroup"]
 CMD ["/lib/systemd/systemd"]
