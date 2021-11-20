@@ -1,9 +1,5 @@
 #!/usr/bin/env make
 
-.PHONY: install
-install:
-	if [ ! -f /usr/local/bin/goss ]; then curl -fsSL https://goss.rocks/install | sh; fi
-
 .PHONY: lint
 lint:
 	hadolint --ignore DL3008 --ignore DL3013 Dockerfile
@@ -24,7 +20,7 @@ test-edit: build
 
 .PHONY: build
 build:
-	docker build . -t artis3n/docker-raspberry-pi-buster-ansible:$${TAG:-test}
+	docker build --platform linux/arm64 . -t artis3n/docker-raspberry-pi-buster-ansible:$${TAG:-test}
 
 .PHONY: run
 run: build

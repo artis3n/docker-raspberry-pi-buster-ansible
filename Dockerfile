@@ -12,6 +12,7 @@ RUN apt-get update \
        sudo systemd systemd-sysv \
        build-essential wget libffi-dev libssl-dev \
        python-pip python-dev python-setuptools python-wheel \
+       python3 python3-pip python3-setuptools python3-wheel python3-dev \
     && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get autoremove \
@@ -34,7 +35,7 @@ RUN find /lib/systemd/system/sysinit.target.wants/* ! -name systemd-tmpfiles-set
     rm -f /lib/systemd/system/getty.target
 
 # Install Ansible via pip.
-RUN pip install --no-cache-dir $pip_packages
+RUN pip3 install --no-cache-dir $pip_packages
 
 COPY initctl_faker .
 RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
